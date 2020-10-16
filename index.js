@@ -20,7 +20,7 @@ function change() {
     }
     difficulty = parseInt(document.getElementById('difficulty').value);
     createTable(difficulty);
-    countdown = setInterval(changeText, 1000);
+    countdown = setInterval(changeCounter, 1000);
     timer = setInterval(changeColor, 1000);
     timesout = setTimeout(function () {
         resetData();
@@ -77,15 +77,24 @@ function getColor(el) {
         var color = element.style.backgroundColor;
         if (color == 'green') {
             score++;
+            console.log(score)
+        }
+        else if (color == 'grey') {
+            score--;
+            if (score < 0) {
+                score = 0;
+            }
+            console.log(score)
         }
     }
 }
 
-function changeText() {
+function changeCounter() {
     document.getElementById('count').innerHTML = counter--;
 }
 
 function resetData() {
+    alert('Game Over!!!\nYour score is: ' + score);
     var element = document.getElementById('table');
     if (element) {
         element.remove();
@@ -97,6 +106,20 @@ function resetData() {
         localStorage.setItem('highest', score);
         document.getElementById('highest').innerHTML = score;
     }
+    counter = 120;
+    score = 0;
+    document.getElementById('difficulty').value = '';
+}
+
+function reset() {
+    var element = document.getElementById('table');
+    if (element) {
+        element.remove();
+    }
+    clearInterval(countdown);
+    clearInterval(timer);
+    document.getElementById('score').innerHTML = '';
+    document.getElementById('count').innerHTML = '';
     counter = 120;
     score = 0;
     document.getElementById('difficulty').value = '';
