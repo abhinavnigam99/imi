@@ -1,20 +1,23 @@
-var timer, difficulty, row, col, countdown, counter = 120, score = 0, timesout, highest;
+var timer, difficulty, row, col, countdown, counter = 120,
+    score = 0,
+    timesout, highest;
+
+// function executed after dom is initialised
 
 function start() {
     highest = localStorage.getItem('highest');
     if (highest) {
         document.getElementById('highest').innerHTML = highest;
-    }
-    else {
+    } else {
         highest = 0;
     }
 }
 
+// function executed when difficulty is changed
+
 function change() {
     if (timer || countdown || timesout) {
-        clearInterval(timer);
-        clearInterval(countdown);
-        clearTimeout(timesout);
+        clear();
         counter = 120;
         score = 0;
     }
@@ -26,6 +29,8 @@ function change() {
         resetData();
     }, 121000)
 }
+
+// function to create a table on selection of difficulty
 
 function createTable(size) {
     var element = document.getElementById('table');
@@ -56,6 +61,8 @@ function createTable(size) {
     tablearea.appendChild(table);
 }
 
+// function to randomly change cell color to green
+
 function changeColor() {
     if (row != 'undefined' && col != 'undefined') {
         var element = document.getElementById(row + '-' + col);
@@ -71,6 +78,8 @@ function changeColor() {
     }
 }
 
+// function to update score on basis of color
+
 function getColor(el) {
     var element = document.getElementById(el.target.id);
     if (element) {
@@ -78,8 +87,7 @@ function getColor(el) {
         if (color == 'green') {
             score++;
             console.log(score)
-        }
-        else if (color == 'grey') {
+        } else if (color == 'grey') {
             score--;
             if (score < 0) {
                 score = 0;
@@ -89,18 +97,19 @@ function getColor(el) {
     }
 }
 
+// function to update counter
+
 function changeCounter() {
     document.getElementById('count').innerHTML = counter--;
 }
 
+// function executed at end of game
 function resetData() {
     alert('Game Over!!!\nYour score is: ' + score);
-    var element = document.getElementById('table');
-    if (element) {
-        element.remove();
+    removeTable();
+    if (timer || countdown || timesout) {
+        clear();
     }
-    clearInterval(countdown);
-    clearInterval(timer);
     document.getElementById('score').innerHTML = score;
     if (score > highest) {
         localStorage.setItem('highest', score);
@@ -111,16 +120,33 @@ function resetData() {
     document.getElementById('difficulty').value = '';
 }
 
+// function executed on resetting the game
+
 function reset() {
-    var element = document.getElementById('table');
-    if (element) {
-        element.remove();
+    removeTable();
+    if (timer || timesout || countdown) {
+        clear();
     }
-    clearInterval(countdown);
-    clearInterval(timer);
     document.getElementById('score').innerHTML = '';
     document.getElementById('count').innerHTML = '';
     counter = 120;
     score = 0;
     document.getElementById('difficulty').value = '';
+}
+
+// function to clear all timers
+
+function clear() {
+    clearInterval(countdown);
+    clearInterval(timer);
+    clearTimeout(timesout);
+}
+
+// function to remove table
+
+function removeTable() {
+    var element = document.getElementById('table');
+    if (element) {
+        element.remove();
+    }
 }

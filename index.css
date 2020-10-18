@@ -1,0 +1,13 @@
+/* base css file */
+
+.main {
+    padding: 20px;
+    border: 1px solid;
+    margin-top: 20px;
+    background-color: antiquewhite;
+}
+
+.reset {
+    text-align-last: end;
+    margin-bottom: 20px;
+}
